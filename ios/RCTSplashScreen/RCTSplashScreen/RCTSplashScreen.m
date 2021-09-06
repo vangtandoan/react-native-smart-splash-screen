@@ -18,16 +18,22 @@ RCT_EXPORT_MODULE(SplashScreen)
 
 
 + (void)open:(RCTRootView *)v withImageNamed:(NSString *)imageName {
+    CGRect tFrame = [UIScreen mainScreen].bounds;
     rootView = v;
-
-    UIImageView *view = [[UIImageView alloc]initWithFrame:[UIScreen mainScreen].bounds];
-    
+    //[rootView setBackgroundColor:[UIColor colorWithRed:54/255.0 green:37/255.0 blue:80/255.0 alpha:1.0]];
+    UIView *bgView = [[UIView alloc] initWithFrame: [UIScreen mainScreen].bounds];
+    [bgView setBackgroundColor: [UIColor colorWithRed:54/255.0 green:37/255.0 blue:80/255.0 alpha:1.0]];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake((tFrame.size.width - 271)/2, (tFrame.size.height / 2 - 171/2) - 45, 271, 171)];
     view.image = [UIImage imageNamed:imageName];
-    view.contentMode = UIViewContentModeScaleAspectFill;
+    
+//    view.contentMode = UIViewContentModescaleAspectFit;
+    view.contentMode = UIViewContentModeScaleAspectFit;
 
+    [bgView addSubview:view];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:rootView  name:RCTContentDidAppearNotification object:rootView];
     
-    [rootView setLoadingView:view];
+    [rootView setLoadingView:bgView];
 }
 
 RCT_EXPORT_METHOD(close:(NSDictionary *)options) {
